@@ -9,11 +9,11 @@ Also, this role is not creating any disks/partitions/LVs. Therefore it is expect
 
 ## Role Variables
 
-A `base_wwn` variable that identifies the host and `iscsi_targets` which contains a list of entries containing the following mandatory entries:
+A `iscsi_base_wwn` variable that identifies the host and `iscsi_targets` which contains a list of entries containing the following mandatory entries:
 
 | Name                  | Description                                                                                 |
 |-----------------------|---------------------------------------------------------------------------------------------|
-| `name`                | `name` identifier of this target. This is appended to `base_wwn` and used as `wwn`          |
+| `name`                | `name` identifier of this target. This is appended to `iscsi_base_wwn` and used as `wwn`          |
 | `disks`               | disk configuration, see [below](#disks)                                                     |
 | `initiators`          | list of `initiator`-`wwn`s                                                                  |
 
@@ -36,7 +36,7 @@ This role depends on the ansible [targetcli modules](https://github.com/OndrejHo
 - hosts: storage
   roles:
     - role: iscsi-target
-      base_wwn: iqn.1994-05.com.redhat
+      iscsi_base_wwn: iqn.1994-05.com.redhat
       iscsi_targets:
         - name: "target"
           disks:

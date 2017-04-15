@@ -13,13 +13,13 @@
 
 - name: create iSCSI target {{ target.name }}
   targetcli_iscsi:
-    wwn: "{{ base_wwn }}:{{ target.name }}"
+    wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
   notify:
     - save targetcli configuration
 
 - name: define ACLs for iSCSI target {{ target.name }}
   targetcli_iscsi_acl:
-    wwn: "{{ base_wwn }}:{{ target.name }}"
+    wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     initiator_wwn: "{{ initiator }}"
   with_items:
     - "{{ target.initiators }}"
@@ -30,7 +30,7 @@
 
 - name: assign LUNs to initiators for target {{ target.name }}
   targetcli_iscsi_lun: 
-    wwn: "{{ base_wwn }}:{{ target.name }}"
+    wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     backstore_type: "{{ disk.type }}"
     backstore_name: "{{ disk.name }}"
   with_items:
