@@ -38,7 +38,7 @@ This role depends on the ansible [targetcli modules](https://github.com/OndrejHo
     - role: iscsi-target
       iscsi_base_wwn: iqn.1994-05.com.redhat
       iscsi_targets:
-        - name: "target"
+        - name: target
           disks:
             - name: vm1
               path: /dev/zvol/tank/vms/testing/vm1
