@@ -13,19 +13,21 @@ A `iscsi_base_wwn` variable that identifies the host and `iscsi_targets` which c
 
 | Name                  | Description                                                                                 |
 |-----------------------|---------------------------------------------------------------------------------------------|
-| `name`                | `name` identifier of this target. This is appended to `iscsi_base_wwn` and used as `wwn`          |
+| `name`                | `name` identifier of this target. This is appended to `iscsi_base_wwn` and used as `wwn`    |
 | `disks`               | disk configuration, see [below](#disks)                                                     |
 | `initiators`          | list of `initiator`-`wwn`s                                                                  |
+
+Optionally, a `iscsi_disk_path_prefix` var can be added at the top level and will be prepended before each disk `path`.
 
 ### disks
 
 a list of dicts with the following mandatory entries:
 
-| Name                  | Description                                                                                 |
-|-----------------------|---------------------------------------------------------------------------------------------|
-| `path`                | existing path to the disk that should be used as backstore.                                 |
-| `name`                | name that is used for the backstore                                                         |
-| `type`                | one out of {`fileio`, `iblock`, `pscsi`, `rd_mcp`}                                          |
+| Name                  | Description                                                                                             |
+|-----------------------|---------------------------------------------------------------------------------------------------------|
+| `path`                | existing path to the disk that should be used as backstore. `iscsi_disk_path_prefix` will be prepended if defined. |
+| `name`                | name that is used for the backstore                                                                     |
+| `type`                | one out of {`fileio`, `iblock`, `pscsi`, `rd_mcp`}                                                      |
 
 ## Dependencies
 
@@ -37,14 +39,15 @@ This role depends on the ansible [targetcli modules](https://github.com/OndrejHo
   roles:
     - role: iscsi-target
       iscsi_base_wwn: iqn.1994-05.com.redhat
+      iscsi_disk_path_prefix: /dev/zvol/tank/vms/
       iscsi_targets:
         - name: target
           disks:
             - name: vm1
-              path: /dev/zvol/tank/vms/testing/vm1
+              path: testing/vm1
               type: iblock
             - name: vm2
-              path: /dev/zvol/tank/vms/testing/vm2
+              path: testing/vm2
               type: iblock
           initiators:
             - iqn.1994-05.com.redhat:client1

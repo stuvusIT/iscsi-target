@@ -3,7 +3,7 @@
   targetcli_backstore:
     backstore_type: "{{ disk.type }}"
     backstore_name: "{{ disk.name }}"
-    options: "{{ disk.path }}"
+    options: " {{iscsi_disk_path_prefix | default('') }}{{ disk.path }} "
   with_items:
     - "{{ target.disks }}"
   loop_control:
