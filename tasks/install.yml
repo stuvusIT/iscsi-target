@@ -3,12 +3,14 @@
   apt:
     name: targetcli
     state: installed
+    update_cache: yes
   when: ansible_pkg_mgr == "apt"
 
 - name: Install targetcli yum packages
   yum: 
     name: targetcli
     state: installed
+    update_cache: yes
   when: ansible_pkg_mgr == "yum"
 
 - name: Start and enable targetcli service
