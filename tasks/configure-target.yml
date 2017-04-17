@@ -7,7 +7,7 @@
   with_items:
     - "{{ target.disks }}"
   loop_control:
-    loop_var: "disk"
+    loop_var: disk
   notify:
     - save targetcli configuration
 
@@ -24,7 +24,7 @@
   with_items:
     - "{{ target.initiators }}"
   loop_control:
-    loop_var: "initiator"
+    loop_var: initiator
   notify:
     - save targetcli configuration
 
@@ -36,6 +36,6 @@
   with_items:
     - "{{ target.disks }}"
   loop_control:
-    loop_var: "disk"
+    loop_var: disk
   notify:
     - save targetcli configuration
