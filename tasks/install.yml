@@ -8,7 +8,6 @@
 - name: Install targetcli apt packages
   apt:
     name: targetcli
-    state: installed
   when: ansible_pkg_mgr == "apt"
 
 - name: Update yum repositories cache
