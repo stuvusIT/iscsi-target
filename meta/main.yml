@@ -20,4 +20,5 @@ galaxy_info:
   - iscsi
   - ubuntu
   - target
-# dependencies omitted as they can't be installed automatically yet
+  dependencies:
+    - role: OndrejHome.targetcli-modules

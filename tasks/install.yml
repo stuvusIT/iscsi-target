@@ -15,7 +15,7 @@
   yum:
     update_cache: yes
   changed_when: false
-  when: ansible_pkg_mgr == "apt"
+  when: ansible_pkg_mgr == "yum"
 
 - name: Install targetcli yum packages
   yum: 
