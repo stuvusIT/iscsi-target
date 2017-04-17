@@ -1,16 +1,26 @@
 ---
+- name: Update apt repositories cache
+  apt:
+    update_cache: yes
+  changed_when: false
+  when: ansible_pkg_mgr == "apt"
+
 - name: Install targetcli apt packages
   apt:
     name: targetcli
     state: installed
+  when: ansible_pkg_mgr == "apt"
+
+- name: Update yum repositories cache
+  yum:
     update_cache: yes
+  changed_when: false
   when: ansible_pkg_mgr == "apt"
 
 - name: Install targetcli yum packages
   yum: 
     name: targetcli
     state: installed
-    update_cache: yes
   when: ansible_pkg_mgr == "yum"
 
 - name: Start and enable targetcli service
