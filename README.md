@@ -9,16 +9,26 @@ Also, this role is not creating any disks/partitions/LVs. Therefore it is expect
 
 ## Role Variables
 
-A `iscsi_base_wwn` variable that identifies the host and `iscsi_targets` which contains a list of entries containing the following mandatory entries:
+| Name                  | mandatory  | Description                                                                                  |
+|-----------------------|------------|---------------------------------------------------------------------------------------------|
+| `iscsi_base_wwn`              | yes  | wwn that identifies the target host |
+| `iscsi_disk_path_prefix`       | no | optional prefix to exported disk paths                                    |
+| `iscsi_targets`     | yes | list of targets to be configured, see [targets](#targets)                                              |
 
-| Name                  | Description                                                                                 |
-|-----------------------|---------------------------------------------------------------------------------------------|
-| `name`                | `name` identifier of this target. This is appended to `iscsi_base_wwn` and used as `wwn`    |
-| `disks`               | disk configuration, see [below](#disks)                                                     |
-| `initiators`          | list of `initiator`-`wwn`s                                                                  |
-| `authentication`      | authentication configuration, see [below](#authentication)                                  |
 
-Optionally, a `iscsi_disk_path_prefix` var can be added at the top level and will be prepended before each disk `path`.
+### targets
+
+each target has the following mandatory vars:
+
+| Name                  | mandatory Description                                                                            |
+|-----------------------|--|-----------------------------------------------------------------------------------------------|
+| `name`                | yes |`name` identifier of this target. This is appended to `iscsi_base_wwn` and used as `wwn`    |
+| `disks`               | yes | disk configuration, see [disks](#disks)                                                     |
+| `initiators`          | yes | list of `initiator`-`wwn`s that are allowed to access this target                           |
+| `authentication`      | yes | authentication configuration, see [authentication](#authentication)                         |
+| `portal_ip`      | yes | local ip on which access to this target is allowed                         |
+| `portal_port`      | no | iSCSI port, omit to use default port 3260                   |
+
 
 ### disks
 
@@ -26,8 +36,8 @@ a list of dicts with the following mandatory entries:
 
 | Name                  | Description                                                                                             |
 |-----------------------|---------------------------------------------------------------------------------------------------------|
-| `path`                | existing path to the disk that should be used as backstore. `iscsi_disk_path_prefix` will be prepended if defined. |
 | `name`                | name that is used for the backstore                                                                     |
+| `path`                | existing path to the disk that should be used as backstore. `iscsi_disk_path_prefix` will be prepended if defined. |
 | `type`                | one out of {`fileio`, `iblock`, `pscsi`, `rd_mcp`}                                                      |
 
 ### authentication
