@@ -20,14 +20,14 @@ Also, this role is not creating any disks/partitions/LVs. Therefore it is expect
 
 each target has the following mandatory vars:
 
-| Name                  | mandatory Description                                                                            |
-|-----------------------|--|-----------------------------------------------------------------------------------------------|
+| Name                  | mandatory | Description                                                                            |
+|-----------------------|--------|-----------------------------------------------------------------------------------------|
 | `name`                | yes |`name` identifier of this target. This is appended to `iscsi_base_wwn` and used as `wwn`    |
-| `disks`               | yes | disk configuration, see [disks](#disks)                                                     |
-| `initiators`          | yes | list of `initiator`-`wwn`s that are allowed to access this target                           |
-| `authentication`      | yes | authentication configuration, see [authentication](#authentication)                         |
-| `portal_ip`      | yes | local ip on which access to this target is allowed                         |
-| `portal_port`      | no | iSCSI port, omit to use default port 3260                   |
+| `disks`               | yes | disk configuration, see [disks](#disks)                                                    |
+| `initiators`          | yes | list of `initiator`-`wwn`s that are allowed to access this target                          |
+| `authentication`      | yes | authentication configuration, see [authentication](#authentication)                        |
+| `portal_ip`           | yes | local ip on which access to this target is allowed                                         |
+| `portal_port`         | no | iSCSI port, omit to use default port 3260                                                   |
 
 
 ### disks
@@ -81,6 +81,7 @@ This role depends on the ansible [targetcli modules](https://github.com/stuvusIT
             password: mypassword
             userid_mutual: sharedkey
             password_mutual: sharedsecret
+          portal_ip: 192.168.1.45
 ```
 
 ## License
