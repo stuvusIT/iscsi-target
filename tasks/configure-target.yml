@@ -1,16 +1,4 @@
 ---
-- name: define backstore objects for target {{ target.name }}
-  targetcli_backstore:
-    backstore_type: "{{ disk.type }}"
-    backstore_name: "{{ disk.name }}"
-    options: " {{iscsi_disk_path_prefix | default('') }}{{ disk.path }} "
-  with_items:
-    - "{{ target.disks }}"
-  loop_control:
-    loop_var: disk
-  notify:
-    - save targetcli configuration
-
 - name: create iSCSI target {{ target.name }}
   targetcli_iscsi:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
@@ -24,7 +12,27 @@
   with_items:
     - "{{ target.initiators }}"
   loop_control:
-    loop_var: initiator
+    loop_var: "initiator"
+  notify:
+    - save targetcli configuration
+
+- name: define backstore objects for target {{ target.name }}
+  targetcli_backstore:
+    backstore_type: "{{ disk.type }}"
+    backstore_name: "{{ disk.name }}"
+    options: " {{ iscsi_disk_path_prefix | default('') }}{{ disk.path }} "
+  with_items:
+    - "{{ target.disks }}"
+  loop_control:
+    loop_var: "disk"
+  notify:
+    - save targetcli configuration
+
+- name: create portal for target {{ target.name }}
+  targetcli_iscsi_portal:
+    wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
+    ip: "{{ iscsi_portal_ip }}"
+    port: "{{ iscsi_portal_port | default(omit) }}"
   notify:
     - save targetcli configuration
 
@@ -36,6 +44,6 @@
   with_items:
     - "{{ target.disks }}"
   loop_control:
-    loop_var: disk
+    loop_var: "disk"
   notify:
     - save targetcli configuration
