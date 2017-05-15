@@ -47,3 +47,13 @@
     loop_var: "disk"
   notify:
     - save targetcli configuration
+
+- name: configure authentication for target {{ target.name }}
+  targetcli_iscsi_auth:
+    wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
+    userid: "{{ target.authentication.userid }}"
+    password: "{{ target.authentication.password }}"
+    userid_mutual: "{{ target.authentication.userid | deault(omit) }}"
+    password_mutual: "{{ target.authentication.password | default(omit) }}"
+  notify:
+    - save targetcli configuration

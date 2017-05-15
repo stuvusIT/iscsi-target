@@ -16,6 +16,7 @@ A `iscsi_base_wwn` variable that identifies the host and `iscsi_targets` which c
 | `name`                | `name` identifier of this target. This is appended to `iscsi_base_wwn` and used as `wwn`    |
 | `disks`               | disk configuration, see [below](#disks)                                                     |
 | `initiators`          | list of `initiator`-`wwn`s                                                                  |
+| `authentication`      | authentication configuration, see [below](#authentication)                                  |
 
 Optionally, a `iscsi_disk_path_prefix` var can be added at the top level and will be prepended before each disk `path`.
 
@@ -29,9 +30,22 @@ a list of dicts with the following mandatory entries:
 | `name`                | name that is used for the backstore                                                                     |
 | `type`                | one out of {`fileio`, `iblock`, `pscsi`, `rd_mcp`}                                                      |
 
+### authentication
+
+`authentication` is a dict containing the following entries:
+
+| Name                  | mandatory  | Description                                                                                  |
+|-----------------------|------------|---------------------------------------------------------------------------------------------|
+| `userid`              | yes  | userid to authenticate the initator |
+| `password`            | yes | password to authenticate the initiator                                                |
+| `userid_mutual`       | no | mutual userid to authenticate the target                                      |
+| `password_mutual`     | no | mutual password to authenticate the target                                                 |
+
+
+
 ## Dependencies
 
-This role depends on the ansible [targetcli modules](https://github.com/OndrejHome/ansible.targetcli-modules) written by [Ondrej Faměra (OndrejHome)](https://github.com/OndrejHome/).
+This role depends on the ansible [targetcli modules](https://github.com/stuvusIT/targetcli-modules).
 
 ## Example Playbook
 ```yml
@@ -52,6 +66,11 @@ This role depends on the ansible [targetcli modules](https://github.com/OndrejHo
           initiators:
             - iqn.1994-05.com.redhat:client1
             - iqn.1994-05.com.redhat:client2
+          authentication:
+            userid: myuser
+            password: mypassword
+            userid_mutual: sharedkey
+            password_mutual: sharedsecret
 ```
 
 ## License
