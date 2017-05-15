@@ -31,8 +31,8 @@
 - name: create portal for target {{ target.name }}
   targetcli_iscsi_portal:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
-    ip: "{{ iscsi_portal_ip }}"
-    port: "{{ iscsi_portal_port | default(omit) }}"
+    ip: "{{ target.portal_ip }}"
+    port: "{{ target.portal_port | default(omit) }}"
   notify:
     - save targetcli configuration
 
