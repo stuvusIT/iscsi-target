@@ -53,7 +53,7 @@
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     userid: "{{ target.authentication.userid }}"
     password: "{{ target.authentication.password }}"
-    userid_mutual: "{{ target.authentication.userid | default(omit) }}"
-    password_mutual: "{{ target.authentication.password | default(omit) }}"
+    userid_mutual: "{{ target.authentication.userid_mutual | default(omit) }}"
+    password_mutual: "{{ target.authentication.password_mutual | default(omit) }}"
   notify:
     - save targetcli configuration
