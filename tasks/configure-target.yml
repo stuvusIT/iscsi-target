@@ -1,11 +1,11 @@
 ---
-- name: create iSCSI target {{ target.name }}
+- name: Create iSCSI target {{ target.name }}
   targetcli_iscsi:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
   notify:
     - save targetcli configuration
 
-- name: define ACLs for iSCSI target {{ target.name }}
+- name: Define ACLs for iSCSI target {{ target.name }}
   targetcli_iscsi_acl:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     initiator_wwn: "{{ initiator }}"
@@ -16,7 +16,7 @@
   notify:
     - save targetcli configuration
 
-- name: define backstore objects for target {{ target.name }}
+- name: Define backstore objects for target {{ target.name }}
   targetcli_backstore:
     backstore_type: "{{ disk.type }}"
     backstore_name: "{{ disk.name }}"
@@ -28,7 +28,7 @@
   notify:
     - save targetcli configuration
 
-- name: create portal for target {{ target.name }}
+- name: Create portal for target {{ target.name }}
   targetcli_iscsi_portal:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     ip: "{{ target.portal_ip }}"
@@ -36,7 +36,7 @@
   notify:
     - save targetcli configuration
 
-- name: assign LUNs to initiators for target {{ target.name }}
+- name: Assign LUNs to initiators for target {{ target.name }}
   targetcli_iscsi_lun: 
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     backstore_type: "{{ disk.type }}"
@@ -48,7 +48,7 @@
   notify:
     - save targetcli configuration
 
-- name: configure authentication for target {{ target.name }}
+- name: Configure authentication for target {{ target.name }}
   targetcli_iscsi_auth:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     userid: "{{ target.authentication.userid }}"
