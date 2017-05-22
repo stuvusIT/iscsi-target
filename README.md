@@ -11,45 +11,45 @@ Also, this role is not creating any disks/partitions/LVs. Therefore it is expect
 
 | Name                  | mandatory  | Description                                                                                  |
 |-----------------------|------------|---------------------------------------------------------------------------------------------|
-| `iscsi_base_wwn`              | yes  | wwn that identifies the target host |
-| `iscsi_disk_path_prefix`       | no | optional prefix to exported disk paths                                    |
-| `iscsi_targets`     | yes | list of targets to be configured, see [targets](#targets)                                              |
+| `iscsi_base_wwn`              | yes  | WWN that identifies the target host |
+| `iscsi_disk_path_prefix`       | no | Optional prefix to exported disk paths                                    |
+| `iscsi_targets`     | yes | List of targets to be configured, see [targets](#targets)                                              |
 
 
-### targets
+### Targets
 
-each target has the following mandatory vars:
+Each target has the following mandatory vars:
 
 | Name                  | mandatory | Description                                                                            |
 |-----------------------|--------|-----------------------------------------------------------------------------------------|
 | `name`                | yes |`name` identifier of this target. This is appended to `iscsi_base_wwn` and used as `wwn`    |
-| `disks`               | yes | disk configuration, see [disks](#disks)                                                    |
-| `initiators`          | yes | list of `initiator`-`wwn`s that are allowed to access this target                          |
-| `authentication`      | yes | authentication configuration, see [authentication](#authentication)                        |
-| `portal_ip`           | yes | local ip on which access to this target is allowed                                         |
+| `disks`               | yes | Disk configuration, see [disks](#disks)                                                    |
+| `initiators`          | yes | List of `initiator`-`wwn`s that are allowed to access this target                          |
+| `authentication`      | yes | Authentication configuration, see [authentication](#authentication)                        |
+| `portal_ip`           | yes | Local ip on which access to this target is allowed                                         |
 | `portal_port`         | no | iSCSI port, omit to use default port 3260                                                   |
 
 
-### disks
+### Disks
 
-a list of dicts with the following mandatory entries:
+A list of dicts with the following mandatory entries:
 
 | Name                  | Description                                                                                             |
 |-----------------------|---------------------------------------------------------------------------------------------------------|
-| `name`                | name that is used for the backstore                                                                     |
-| `path`                | existing path to the disk that should be used as backstore. `iscsi_disk_path_prefix` will be prepended if defined. |
-| `type`                | one out of {`fileio`, `iblock`, `pscsi`, `rd_mcp`}                                                      |
+| `name`                | Name that is used for the backstore                                                                     |
+| `path`                | Existing path to the disk that should be used as backstore. `iscsi_disk_path_prefix` will be prepended if defined. |
+| `type`                | One out of {`fileio`, `iblock`, `pscsi`, `rd_mcp`}                                                      |
 
 ### authentication
 
 `authentication` is a dict containing the following entries:
 
 | Name                  | mandatory  | Description                                                                                  |
-|-----------------------|------------|---------------------------------------------------------------------------------------------|
-| `userid`              | yes  | userid to authenticate the initator |
-| `password`            | yes | password to authenticate the initiator                                                |
-| `userid_mutual`       | no | mutual userid to authenticate the target                                      |
-| `password_mutual`     | no | mutual password to authenticate the target                                                 |
+|-----------------------|------------|----------------------------------------------------------------------------------------------|
+| `userid`              | yes  | Userid to authenticate the initator                                                                |
+| `password`            | yes | Password to authenticate the initiator                                                              |
+| `userid_mutual`       | no | Mutual userid to authenticate the target                                                             |
+| `password_mutual`     | no | Mutual password to authenticate the target                                                           |
 
 
 
