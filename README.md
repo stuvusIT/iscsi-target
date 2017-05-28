@@ -10,7 +10,7 @@ Also, this role is not creating any disks/partitions/LVs. Therefore it is expect
 ## Role Variables
 
 | Name                  | mandatory  | Description                                                                                  |
-|-----------------------|------------|---------------------------------------------------------------------------------------------|
+|-----------------------|------------|----------------------------------------------------------------------------------------------|
 | `iscsi_base_wwn`              | yes  | WWN that identifies the target host |
 | `iscsi_disk_path_prefix`       | no | Optional prefix to exported disk paths                                    |
 | `iscsi_targets`     | yes | List of targets to be configured, see [targets](#targets)                                              |
@@ -18,16 +18,17 @@ Also, this role is not creating any disks/partitions/LVs. Therefore it is expect
 
 ### Targets
 
-Each target has the following mandatory vars:
+Each target has the following vars:
 
-| Name                  | mandatory | Description                                                                            |
+| Name                  | mandatory | Description                                                                          |
 |-----------------------|--------|-----------------------------------------------------------------------------------------|
 | `name`                | yes |`name` identifier of this target. This is appended to `iscsi_base_wwn` and used as `wwn`    |
 | `disks`               | yes | Disk configuration, see [disks](#disks)                                                    |
 | `initiators`          | yes | List of `initiator`-`wwn`s that are allowed to access this target                          |
 | `authentication`      | yes | Authentication configuration, see [authentication](#authentication)                        |
 | `portal_ip`           | yes | Local ip on which access to this target is allowed                                         |
-| `portal_port`         | no | iSCSI port, omit to use default port 3260                                                   |
+| `portal_port`         | no  | iSCSI port, omit to use default port 3260                                                  |
+| `state`               | no  | `present` or `absent`. Default: `present`                                                  |
 
 
 ### Disks
