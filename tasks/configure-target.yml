@@ -31,7 +31,7 @@
   notify:
     - save targetcli configuration
 
-- name: Configure authentication for target {{ target.name }} and initiator {{ initiator }}
+- name: Configure authentication for target {{ target.name }}
   targetcli_iscsi_auth:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     initiator_wwn: "{{ initiator.name }}"
