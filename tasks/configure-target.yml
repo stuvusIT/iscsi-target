@@ -50,11 +50,15 @@
 - name: Create portal for target {{ target.name }}
   targetcli_iscsi_portal:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
-    ip: "{{ target.portal_ip }}"
-    port: "{{ target.portal_port | default(omit) }}"
+    ip: "{{ portal.ip }}"
+    port: "{{ portal.port | default(omit) }}"
     state: "{{ target.state | default('present') }}"
   notify:
     - save targetcli configuration
+  loop_control:
+    loop_var: "portal"
+  with_items:
+    - "{{ target.portals }}"
 
 - name: Assign LUNs to initiators for target {{ target.name }}
   targetcli_iscsi_lun: 
