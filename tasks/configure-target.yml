@@ -2,17 +2,7 @@
 - name: Create iSCSI target {{ target.name }}
   targetcli_iscsi:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
-  notify:
-    - save targetcli configuration
-
-- name: Define ACLs for iSCSI target {{ target.name }}
-  targetcli_iscsi_acl:
-    wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
-    initiator_wwn: "{{ initiator }}"
-  with_items:
-    - "{{ target.initiators }}"
-  loop_control:
-    loop_var: "initiator"
+    state: "{{ target.state | default('present') }}"
   notify:
     - save targetcli configuration
 
@@ -21,6 +11,7 @@
     backstore_type: "{{ disk.type }}"
     backstore_name: "{{ disk.name }}"
     options: " {{ iscsi_disk_path_prefix | default('') }}{{ disk.path }} "
+    state: "{{ target.state | default('present') }}"
   with_items:
     - "{{ target.disks }}"
   loop_control:
@@ -28,32 +19,56 @@
   notify:
     - save targetcli configuration
 
-- name: Create portal for target {{ target.name }}
-  targetcli_iscsi_portal:
+- name: Define ACLs for iSCSI target {{ target.name }}
+  targetcli_iscsi_acl:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
-    ip: "{{ target.portal_ip }}"
-    port: "{{ target.portal_port | default(omit) }}"
-  notify:
-    - save targetcli configuration
-
-- name: Assign LUNs to initiators for target {{ target.name }}
-  targetcli_iscsi_lun: 
-    wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
-    backstore_type: "{{ disk.type }}"
-    backstore_name: "{{ disk.name }}"
+    initiator_wwn: "{{ initiator.name }}"
+    state: "{{ target.state | default('present') }}"
   with_items:
-    - "{{ target.disks }}"
+    - "{{ target.initiators }}"
   loop_control:
-    loop_var: "disk"
+    loop_var: "initiator"
   notify:
     - save targetcli configuration
 
 - name: Configure authentication for target {{ target.name }}
   targetcli_iscsi_auth:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
-    userid: "{{ target.authentication.userid }}"
-    password: "{{ target.authentication.password }}"
-    userid_mutual: "{{ target.authentication.userid_mutual | default(omit) }}"
-    password_mutual: "{{ target.authentication.password_mutual | default(omit) }}"
+    initiator_wwn: "{{ initiator.name }}"
+    userid: "{{ initiator.authentication.userid }}"
+    password: "{{ initiator.authentication.password }}"
+    userid_mutual: "{{ initiator.authentication.userid_mutual | default(omit) }}"
+    password_mutual: "{{ initiator.authentication.password_mutual | default(omit) }}"
+  notify:
+    - save targetcli configuration
+  when: target.state is not defined or target.state == "present"
+  loop_control:
+    loop_var: "initiator"
+  with_items:
+    - "{{ target.initiators }}"
+
+- name: Create portal for target {{ target.name }}
+  targetcli_iscsi_portal:
+    wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
+    ip: "{{ portal.ip }}"
+    port: "{{ portal.port | default(omit) }}"
+    state: "{{ target.state | default('present') }}"
+  notify:
+    - save targetcli configuration
+  loop_control:
+    loop_var: "portal"
+  with_items:
+    - "{{ target.portals }}"
+
+- name: Assign LUNs to initiators for target {{ target.name }}
+  targetcli_iscsi_lun: 
+    wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
+    backstore_type: "{{ disk.type }}"
+    backstore_name: "{{ disk.name }}"
+    state: "{{ target.state | default('present') }}"
+  with_items:
+    - "{{ target.disks }}"
+  loop_control:
+    loop_var: "disk"
   notify:
     - save targetcli configuration
