@@ -9,46 +9,46 @@ Also, this role is not creating any disks/partitions/LVs. Therefore it is expect
 
 ## Role Variables
 
-| Name                     | mandatory | Description                                               |
-|--------------------------|-----------|-----------------------------------------------------------|
-| `iscsi_base_wwn`         | yes       | WWN that identifies the target host                       |
-| `iscsi_disk_path_prefix` | no        | Optional prefix to exported disk paths                    |
-| `iscsi_targets`          | yes       | List of targets to be configured, see [targets](#targets) |
+| Name                     | Default / Mandatory | Description                                               |
+|:-------------------------|:-------------------:|:----------------------------------------------------------|
+| `iscsi_base_wwn`         | :heavy_check_mark:  | WWN that identifies the target host                       |
+| `iscsi_disk_path_prefix` |        `''`         | Optional prefix to exported disk paths                    |
+| `iscsi_targets`          | :heavy_check_mark:  | List of targets to be configured, see [targets](#targets) |
 
 
 ### Targets
 
 Each target has the following vars:
 
-| Name         | mandatory | Description                                                                                                                             |
-|--------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| `name`       | yes       | `name` identifier of this target. This is appended to `iscsi_base_wwn` and used as `wwn`                                                |
-| `disks`      | yes       | Disk configuration, see [disks](#disks)                                                                                                 |
-| `initiators` | yes       | List of `initiators` that are allowed to connect to this target, see [initiators](#initiators)                                          |
-| `portals`    | yes       | List of dicts that contains the local `ip` and optionally the `port` on which access to this target is allowed (default port is `3260`) |
-| `state`      | no        | `present` or `absent`. Default: `present`                                                                                               |
+| Name         | Default / Mandatory | Description                                                                                                                             |
+|:-------------|:-------------------:|:----------------------------------------------------------------------------------------------------------------------------------------|
+| `name`       | :heavy_check_mark:  | `name` identifier of this target. This is appended to `iscsi_base_wwn` and used as `wwn`                                                |
+| `disks`      | :heavy_check_mark:  | Disk configuration, see [disks](#disks)                                                                                                 |
+| `initiators` | :heavy_check_mark:  | List of `initiators` that are allowed to connect to this target, see [initiators](#initiators)                                          |
+| `portals`    | :heavy_check_mark:  | List of dicts that contains the local `ip` and optionally the `port` on which access to this target is allowed (default port is `3260`) |
+| `state`      |      `present`      | `present` or `absent`. Default: `present`                                                                                               |
 
 
 ### Disks
 
-A list of dicts with the following mandatory entries:
+A list of dicts with the following entries:
 
-| Name   | Description                                                                                                        |
-|--------|--------------------------------------------------------------------------------------------------------------------|
-| `name` | Name that is used for the backstore                                                                                |
-| `path` | Existing path to the disk that should be used as backstore. `iscsi_disk_path_prefix` will be prepended if defined. |
-| `type` | One out of {`fileio`, `iblock`, `pscsi`, `rd_mcp`}                                                                 |
+| Name   | Default / Mandatory | Description                                                                                                        |
+|:-------|:-------------------:|:-------------------------------------------------------------------------------------------------------------------|
+| `name` | :heavy_check_mark:  | Name that is used for the backstore                                                                                |
+| `path` | :heavy_check_mark:  | Existing path to the disk that should be used as backstore. `iscsi_disk_path_prefix` will be prepended if defined. |
+| `type` | :heavy_check_mark:  | One out of {`fileio`, `iblock`, `pscsi`, `rd_mcp`}                                                                 |
 
 ### Initiators
 
 `initiators` is a lists of dicts that must have a `wwn` attribute and can optionally have a `authentication` attribute, which is also a dict that can contain the following entries:
 
-| Name              | mandatory | Description                                |
-|-------------------|-----------|--------------------------------------------|
-| `userid`          | yes       | Userid to authenticate the initator        |
-| `password`        | yes       | Password to authenticate the initiator     |
-| `userid_mutual`   | no        | Mutual userid to authenticate the target   |
-| `password_mutual` | no        | Mutual password to authenticate the target |
+| Name              |     mandatory      | Description                                |
+|:------------------|:------------------:|:-------------------------------------------|
+| `userid`          | :heavy_check_mark: | Userid to authenticate the initator        |
+| `password`        | :heavy_check_mark: | Password to authenticate the initiator     |
+| `userid_mutual`   |     (omitted)      | Mutual userid to authenticate the target   |
+| `password_mutual` |     (omitted)      | Mutual password to authenticate the target |
 
 
 
