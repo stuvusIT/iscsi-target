@@ -22,10 +22,10 @@
     state: installed
   when: ansible_pkg_mgr == "yum"
 
-- name: Add iSCSI module {{item}} to /etc/modules
+- name: Add iSCSI modules to /etc/modules
   lineinfile:
     dest: /etc/modules
-    line: "{{item}}"
+    line: "{{ item }}"
     state: present
   with_items:
     - tcm_qla2xxx
@@ -34,7 +34,7 @@
     - tcm_loop
 
 - name: Reload kernel modules
-  systemd:
+  service:
     name: systemd-modules-load
     state: restarted
 
