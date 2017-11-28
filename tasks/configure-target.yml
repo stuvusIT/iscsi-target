@@ -1,12 +1,12 @@
 ---
-- name: Create iSCSI target {{ target.name }}
+- name: Create or remove iSCSI target {{ target.name }}
   targetcli_iscsi:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     state: "{{ target.state | default('present') }}"
   notify:
     - save targetcli configuration
 
-- name: Define backstore objects for target {{ target.name }}
+- name: Create or remove backstore objects for target {{ target.name }}
   targetcli_backstore:
     backstore_type: "{{ disk.type | default(iscsi_default_disk_type) }}"
     backstore_name: "{{ disk.name }}"
@@ -23,9 +23,9 @@
   targetcli_iscsi_acl:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     initiator_wwn: "{{ initiator.name }}"
-    state: "{{ target.state | default('present') }}"
   with_items:
     - "{{ target.initiators | default(iscsi_default_initiators) }}"
+  when: target.state|default("present") == "present"
   loop_control:
     loop_var: "initiator"
   notify:
@@ -41,7 +41,7 @@
     password_mutual: "{{ initiator.authentication.password_mutual | default(omit) }}"
   notify:
     - save targetcli configuration
-  when: target.state is not defined or target.state == "present"
+  when: target.state|default("present") == "present"
   loop_control:
     loop_var: "initiator"
   with_items:
@@ -52,22 +52,22 @@
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     ip: "{{ portal.ip }}"
     port: "{{ portal.port | default(omit) }}"
-    state: "{{ target.state | default('present') }}"
   notify:
     - save targetcli configuration
+  when: target.state|default("present") == "present"
   loop_control:
     loop_var: "portal"
   with_items:
     - "{{ target.portals | default(iscsi_default_portals) }}"
 
-- name: Assign LUNs to initiators for target {{ target.name }}
+- name: Assign backstores to initiators for target {{ target.name }}
   targetcli_iscsi_lun: 
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     backstore_type: "{{ disk.type | default(iscsi_default_disk_type) }}"
     backstore_name: "{{ disk.name }}"
-    state: "{{ target.state | default('present') }}"
   with_items:
     - "{{ target.disks }}"
+  when: target.state|default("present") == "present"
   loop_control:
     loop_var: "disk"
   notify:
