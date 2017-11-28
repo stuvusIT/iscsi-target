@@ -8,9 +8,9 @@
 
 - name: Define backstore objects for target {{ target.name }}
   targetcli_backstore:
-    backstore_type: "{{ disk.type }}"
+    backstore_type: "{{ disk.type | default(iscsi_default_disk_type) }}"
     backstore_name: "{{ disk.name }}"
-    options: " {{ iscsi_disk_path_prefix | default('') }}{{ disk.path }} "
+    options: " {{ iscsi_disk_path_prefix }}{{ disk.path }} "
     state: "{{ target.state | default('present') }}"
   with_items:
     - "{{ target.disks }}"
@@ -25,7 +25,7 @@
     initiator_wwn: "{{ initiator.name }}"
     state: "{{ target.state | default('present') }}"
   with_items:
-    - "{{ target.initiators }}"
+    - "{{ target.initiators | default(iscsi_default_initiators) }}"
   loop_control:
     loop_var: "initiator"
   notify:
@@ -45,7 +45,7 @@
   loop_control:
     loop_var: "initiator"
   with_items:
-    - "{{ target.initiators }}"
+    - "{{ target.initiators | default(iscsi_default_initiators) }}"
 
 - name: Create portal for target {{ target.name }}
   targetcli_iscsi_portal:
@@ -58,12 +58,12 @@
   loop_control:
     loop_var: "portal"
   with_items:
-    - "{{ target.portals }}"
+    - "{{ target.portals | default(iscsi_default_portals) }}"
 
 - name: Assign LUNs to initiators for target {{ target.name }}
   targetcli_iscsi_lun: 
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
-    backstore_type: "{{ disk.type }}"
+    backstore_type: "{{ disk.type | default(iscsi_default_disk_type) }}"
     backstore_name: "{{ disk.name }}"
     state: "{{ target.state | default('present') }}"
   with_items:

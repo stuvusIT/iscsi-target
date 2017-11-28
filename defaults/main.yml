@@ -1,0 +1,3 @@
+---
+iscsi_default_disk_type: iblock
+iscsi_disk_path_prefix: ''
