@@ -22,7 +22,7 @@
     state: installed
   when: ansible_pkg_mgr == "yum"
 
-- name: Add iSCSI modules to /etc/modules
+- name: Add iSCSI kernel modules to /etc/modules
   lineinfile:
     dest: /etc/modules
     line: "{{ item }}"
@@ -32,14 +32,16 @@
     - iscsi_target_mod
     - tcm_usb_gadget
     - tcm_loop
+  register: kernelmodules
 
 - name: Reload kernel modules
   service:
     name: systemd-modules-load
     state: restarted
+  when: kernelmodules.changed
 
 - name: Start and enable targetcli service
-  service: 
+  service:
     name: target
     enabled: yes
     state: started
