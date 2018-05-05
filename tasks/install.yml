@@ -1,26 +1,11 @@
 ---
-- name: Update apt repositories cache
-  apt:
-    update_cache: yes
-  changed_when: false
-  when: ansible_pkg_mgr == "apt"
-
 - name: Install targetcli apt packages
   apt:
-    name: targetcli
-  when: ansible_pkg_mgr == "apt"
-
-- name: Update yum repositories cache
-  yum:
-    update_cache: yes
-  changed_when: false
-  when: ansible_pkg_mgr == "yum"
-
-- name: Install targetcli yum packages
-  yum: 
-    name: targetcli
-    state: installed
-  when: ansible_pkg_mgr == "yum"
+    name: "{{ item }}"
+  with_items:
+    - python-configshell-fb
+    - python-rtslib-fb
+    - targetcli-fb
 
 - name: Add iSCSI kernel modules to /etc/modules
   lineinfile:
@@ -40,8 +25,8 @@
     state: restarted
   when: kernelmodules.changed
 
-- name: Start and enable targetcli service
+- name: Start and enable LIO target service
   service:
-    name: target
+    name: rtslib-fb-targetctl
     enabled: yes
     state: started

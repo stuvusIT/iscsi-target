@@ -49,6 +49,15 @@
     - "{{ target.initiators | default(iscsi_default_initiators) }}"
   no_log: True
 
+- name: Remove default portal for {{ target.name }}
+  targetcli_iscsi_portal:
+    wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
+    ip: "0.0.0.0"
+    state: absent
+  notify:
+    - save targetcli configuration
+  when: target.state|default("present") == "present"
+
 - name: Create portal for target {{ target.name }}
   targetcli_iscsi_portal:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"

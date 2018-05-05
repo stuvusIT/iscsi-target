@@ -2,4 +2,4 @@
 iscsi_disk_path_prefix: ""
 iscsi_default_initiators: []
 iscsi_default_portals: []
-iscsi_default_disk_type: iblock
+iscsi_default_disk_type: block
