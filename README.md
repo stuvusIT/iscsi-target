@@ -4,7 +4,7 @@ iSCSI target role that installs and uses `targetcli`.
 
 ## Requirements
 
-An apt- or yum-based package manager and systemd. 
+Ubuntu, at least Bionic (versions before that don't carry the `targetcli-fb` package).
 Also, this role is not creating any disks/partitions/LVs. 
 Therefore it is expected that they are already present on machine or created by some other role.
 
@@ -17,7 +17,7 @@ Therefore it is expected that they are already present on machine or created by 
 | `iscsi_targets`            | :heavy_check_mark:  | List of targets to be configured, see [targets](#targets)                                 |
 | `iscsi_default_initiators` |        `[]`         | A list of [initiators](#initiators). If specified it will be used as default for targets. |
 | `iscsi_default_portals`    |        `[]`         | A list of dicts having an `ip` and optionally a `port`                                    |
-| `iscsi_default_disk_type`  |      `iblock`       | Default [disk](#disks) type                                                               |
+| `iscsi_default_disk_type`  |       `block`       | Default [disk](#disks) type                                                               |
 
 ### Targets
 
