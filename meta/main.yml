@@ -10,18 +10,15 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
-        - artful
         - bionic
     - name: Debian
       versions:
         - stretch
 
   galaxy_tags:
-  - stuvus
   - storage
   - iscsi
-  - ubuntu
-  - target
+  - targetcli
 
   dependencies:
     - role: OndrejHome.targetcli-modules
