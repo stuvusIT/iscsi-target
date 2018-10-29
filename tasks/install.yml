@@ -13,9 +13,7 @@
     line: "{{ item }}"
     state: present
   with_items:
-    - tcm_qla2xxx
     - iscsi_target_mod
-    - tcm_usb_gadget
     - tcm_loop
   register: kernelmodules
 
