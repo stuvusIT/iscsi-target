@@ -1,11 +1,10 @@
 ---
 - name: Install targetcli apt packages
   apt:
-    name: "{{ item }}"
-  with_items:
-    - python-configshell-fb
-    - python-rtslib-fb
-    - targetcli-fb
+    name:
+      - python-configshell-fb
+      - python-rtslib-fb
+      - targetcli-fb
 
 - name: Add iSCSI kernel modules to /etc/modules
   lineinfile:
