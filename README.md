@@ -5,7 +5,7 @@ iSCSI target role that installs and uses `targetcli`.
 ## Requirements
 
 Debian stretch or Ubuntu (at least bionic as versions before that don't carry the `targetcli-fb` package).
-Also, this role is not creating any disks/partitions/LVs. 
+Also, this role is not creating any disks/partitions/LVs.
 Therefore it is expected that they are already present on machine or created by some other role.
 
 ## Role Variables

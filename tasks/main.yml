@@ -1,7 +1,7 @@
 ---
 - import_tasks: install.yml
 - include_tasks: configure-target.yml
-  with_items: 
+  with_items:
     - "{{ iscsi_targets }}"
   loop_control:
     loop_var: "target"
