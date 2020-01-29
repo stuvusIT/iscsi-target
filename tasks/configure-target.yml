@@ -72,7 +72,7 @@
     - "{{ target.portals | default(iscsi_default_portals) }}"
 
 - name: Assign backstores to initiators for target {{ target.name }}
-  targetcli_iscsi_lun: 
+  targetcli_iscsi_lun:
     wwn: "{{ iscsi_base_wwn }}:{{ target.name }}"
     backstore_type: "{{ disk.type | default(iscsi_default_disk_type) }}"
     backstore_name: "{{ disk.name }}"
