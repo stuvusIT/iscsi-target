@@ -2,8 +2,6 @@
 - name: Install targetcli apt packages
   apt:
     name:
-      - python-configshell-fb
-      - python-rtslib-fb
       - python3-configshell-fb
       - python3-rtslib-fb
       - targetcli-fb
